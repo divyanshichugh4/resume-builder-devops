@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder | Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Resume Builder</h1>
+
+```
+<!-- TOGGLE BUTTONS -->
+<div class="toggle-buttons">
+    <button type="button" id="loginBtn" class="active" onclick="showLogin()">Login</button>
+    <button type="button" id="signupBtn" onclick="showSignup()">Sign Up</button>
+</div>
+
+<!-- LOGIN FORM -->
+<div id="loginForm">
+    <input type="text" id="loginUser" placeholder="Username">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button type="button" class="submit-btn" onclick="login()">Login</button>
+</div>
+
+<!-- SIGNUP FORM -->
+<div id="signupForm" style="display:none;">
+    <input type="text" id="signupUser" placeholder="Create Username">
+    <input type="password" id="signupPass" placeholder="Create Password">
+    <button type="button" class="submit-btn" onclick="signup()">Sign Up</button>
+</div>
+```
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
