@@ -65,6 +65,33 @@ function saveResume() {
         skills,
         education,
         experience
+let file = document.getElementById("photo").files[0];
+
+if (file) {
+    let reader = new FileReader();
+
+    reader.onload = function () {
+        resumeData.photo = reader.result;
+
+        let resumes = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
+
+resumes.push(resumeData);
+
+localStorage.setItem("resumes_" + user, JSON.stringify(resumes));
+
+        alert("Resume Saved!");
+        window.location.href = "preview.html";
+    };
+
+    reader.readAsDataURL(file);
+} else {
+    resumeData.photo = null;
+
+    localStorage.setItem("resume_" + user, JSON.stringify(resumeData));
+
+    alert("Resume Saved!");
+    window.location.href = "preview.html";
+}
     };
 
     localStorage.setItem("resume_" + user, JSON.stringify(resumeData));

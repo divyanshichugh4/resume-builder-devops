@@ -145,8 +145,61 @@
     </div>
   </div>
 
-  <button type="submit" class="submit-btn">Save</button>
+  <button type="button" class="submit-btn" onclick="saveResume()">Save</button>
 </form>
+<script>
+function saveResume() {
+    let user = localStorage.getItem("loggedInUser");
 
+    if (!user) {
+        alert("Please login first!");
+        window.location.href = "index.html";
+        return;
+    }
+
+    // ✅ Get selected template
+    let template = localStorage.getItem("selectedTemplate");
+
+    // ✅ Create resume object
+    let resumeData = {
+        template: template,
+        firstName: document.getElementById("firstName").value,
+        middleName: document.getElementById("middleName").value,
+        lastName: document.getElementById("lastName").value,
+        gender: document.getElementById("gender").value,
+        dob: document.getElementById("dob").value,
+        maritalStatus: document.getElementById("maritalStatus").value,
+        profession: document.getElementById("profession").value,
+        address: document.getElementById("streetAddress").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        nationality: document.getElementById("nationality").value,
+        passport: document.getElementById("passport").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value
+    };
+<div class="form-group">
+  <label>Profile Photo</label>
+  <input type="file" id="photo" accept="image/*">
+</div>
+    // ✅ Save data
+    localStorage.setItem("resume_" + user, JSON.stringify(resumeData));
+
+    alert("Resume Saved Successfully!");
+
+    // ✅ Go back to dashboard
+    window.location.href = "preview.html";
+}
+
+// ✅ Protect page
+window.onload = function () {
+    let user = localStorage.getItem("loggedInUser");
+
+    if (!user) {
+        alert("Please login first!");
+        window.location.href = "index.html";
+    }
+};
+</script>
 </body>
 </html>

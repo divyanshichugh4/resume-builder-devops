@@ -153,12 +153,12 @@ body {
 
 <script>
 function openBuilder() {
-  window.location.href = "builder.html";
+  window.location.href = "templates.html";
 }
 
 function logout() {
-  localStorage.removeItem("loggedInUser");
-  window.location.href = "resume.html";
+  localStorage.clear();
+  window.location.href = "index.html";
 }
 
 /* Show logged in user */
@@ -167,13 +167,53 @@ window.onload = function () {
 
   if (!user) {
     alert("Please login first!");
-    window.location.href = "resume.html";
+    window.location.href = "index.html";
   } else {
     document.getElementById("welcomeUser").innerText = "Welcome, " + user;
   }
 };
 </script>
+<script>
+function loadResumes() {
+  let user = localStorage.getItem("loggedInUser");
+  let resumes = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
 
+  let html = "";
+
+  if (resumes.length === 0) {
+    html = "<p>No resumes yet.</p>";
+  } else {
+    resumes.forEach((r, index) => {
+      html += `
+        <div style="margin-top:10px;padding:10px;border:1px solid #ddd;border-radius:8px;">
+          <b>${r.firstName} ${r.lastName}</b> - ${r.profession}
+          <br>
+          <button onclick="viewResume(${index})">View</button>
+        </div>
+      `;
+    });
+  }
+
+  document.getElementById("resumeList").innerHTML = html;
+}
+
+function viewResume(index) {
+  localStorage.setItem("currentResumeIndex", index);
+  window.location.href = "preview.html";
+}
+
+window.onload = function () {
+  let user = localStorage.getItem("loggedInUser");
+
+  if (!user) {
+    alert("Please login first!");
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("welcomeUser").innerText = "Welcome, " + user;
+    loadResumes();
+  }
+};
+</script>
 </body>
 </html>
 ```
