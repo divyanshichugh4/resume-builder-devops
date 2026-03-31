@@ -1,129 +1,105 @@
-alert("JS is working");
-// =========================
-// TOGGLE LOGIN / SIGNUP
-// =========================
-function showLogin() {
-let loginForm = document.getElementById("loginForm");
-let signupForm = document.getElementById("signupForm");
+// script.js
 
+// Example: Add event listeners for buttons or other interactive elements
 
-if (loginForm && signupForm) {
-    loginForm.style.display = "block";
-    signupForm.style.display = "none";
+// Wait for the DOM to load
+document.addEventListener('DOMContentLoaded', () => {
+  // Example: Handle "Get Started" button click in homepage
+  const getStartedBtn = document.querySelector('.hero-btn');
+  if (getStartedBtn) {
+    getStartedBtn.addEventListener('click', () => {
+      alert('Getting started...');
+      // You can replace alert with redirect or other actions
+      window.location.href = 'dashboard.html'; // redirect to dashboard
+    });
+  }
 
-    document.getElementById("loginBtn").classList.add("active");
-    document.getElementById("signupBtn").classList.remove("active");
-}
-
-
-}
-
-function showSignup() {
-let loginForm = document.getElementById("loginForm");
-let signupForm = document.getElementById("signupForm");
-if (loginForm && signupForm) {
-    loginForm.style.display = "none";
-    signupForm.style.display = "block";
-
-    document.getElementById("signupBtn").classList.add("active");
-    document.getElementById("loginBtn").classList.remove("active");
-}
-
-
-}
-
-// =========================
-// LOGIN FUNCTION
-// =========================
-function login() {
-let user = document.getElementById("loginUser")?.value;
-let pass = document.getElementById("loginPass")?.value;
-
-
-if (user && pass) {
-    alert("Login Successful!");
-
-    localStorage.setItem("loggedInUser", user);
-
-    window.location.href = "dashboard.html";
-} else {
-    alert("Please fill all fields");
-}
-
-
-}
-
-// =========================
-// SIGNUP FUNCTION
-// =========================
-function signup() {
-let user = document.getElementById("signupUser")?.value;
-let pass = document.getElementById("signupPass")?.value;
-
-```
-if (user && pass) {
-    alert("Account Created! Now login.");
-
-    localStorage.setItem("user", user);
-    localStorage.setItem("pass", pass);
-
-    showLogin();
-} else {
-    alert("Please fill all fields");
-}
-```
-
-}
-
-// =========================
-// DASHBOARD NAVIGATION
-// =========================
+  // Example: Handle "Learn More" button
+  const learnMoreBtn = document.querySelectorAll('.hero-btn')[1];
+  if (learnMoreBtn) {
+    learnMoreBtn.addEventListener('click', () => {
+      alert('Learn more about our features.');
+      // Add your action here
+    });
+  }
 function goToResume() {
-window.location.href = "resume.html";
+    window.location.href = "resume_form.html";
 }
-
-// =========================
-// CHECK LOGIN (for dashboard security)
-// =========================
-window.onload = function () {
-let currentPage = window.location.pathname;
-
-
-if (currentPage.includes("dashboard.html")) {
-    let user = localStorage.getItem("loggedInUser");
-
-    if (!user) {
-        alert("Please login first!");
-        window.location.href = "index.html";
-    }
-}
-function showSignup() {
-    console.log("Signup clicked");  // 👈 ADD THIS
-
-    let loginForm = document.getElementById("loginForm");
-    let signupForm = document.getElementById("signupForm");
-
-    if (loginForm && signupForm) {
-        loginForm.style.display = "none";
-        signupForm.style.display = "block";
-
-        document.getElementById("signupBtn").classList.add("active");
-        document.getElementById("loginBtn").classList.remove("active");
-    }
 function generateResume() {
     let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
     let phone = document.getElementById("phone").value;
     let skills = document.getElementById("skills").value;
 
-    let output = `
-        <h2>${name}</h2>
-        <p><b>Email:</b> ${email}</p>
-        <p><b>Phone:</b> ${phone}</p>
-        <p><b>Skills:</b> ${skills}</p>
-    `;
+    // Save data
+    localStorage.setItem("name", name);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phone", phone);
+    localStorage.setItem("skills", skills);
 
-    document.getElementById("resumeOutput").innerHTML = output;
+    // Go to result page
+    window.location.href = "resume_result.html";
 }
-}
+window.onload = function () {
+    if (window.location.pathname.includes("dashboard.html")) {
+        let user = localStorage.getItem("loggedInUser");
+
+        if (!user) {
+            alert("Please login first!");
+            window.location.href = "resume.html";
+        }
+    }
 };
+function saveResume() {
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let skills = document.getElementById("skills").value;
+    let education = document.getElementById("education").value;
+    let experience = document.getElementById("experience").value;
+
+    let user = localStorage.getItem("loggedInUser");
+
+    let resumeData = {
+        name,
+        email,
+        skills,
+        education,
+        experience
+    };
+
+    localStorage.setItem("resume_" + user, JSON.stringify(resumeData));
+
+    alert("Resume Saved!");
+    displayResume();
+}
+function displayResume() {
+    let user = localStorage.getItem("loggedInUser");
+    let data = localStorage.getItem("resume_" + user);
+
+    if (!data) return;
+
+    let resume = JSON.parse(data);
+
+    document.getElementById("resumeOutput").innerHTML = `
+        <h3>${resume.name}</h3>
+        <p><b>Email:</b> ${resume.email}</p>
+        <p><b>Skills:</b> ${resume.skills}</p>
+        <p><b>Education:</b> ${resume.education}</p>
+        <p><b>Experience:</b> ${resume.experience}</p>
+    `;
+}
+window.onload = function () {
+    let user = localStorage.getItem("loggedInUser");
+
+    if (!user) {
+        alert("Please login first!");
+        window.location.href = "resume.html";
+    } else {
+        displayResume();
+    }
+};
+function openBuilder() {
+    window.location.href = "builder.html";
+}
+  // Additional scripts can be added here for dashboard interactions
+});

@@ -1,43 +1,187 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Builder | Login</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My CV Creator</title>
+<style>
+  /* Reset some default styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
+  /* Body style with light background */
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+  }
+
+  /* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  /* Logo / Title */
+.logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo svg {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .logo span {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #4a4a4a;
+  }
+
+  /* Navigation menu */
+  nav {
+    display: flex;
+    gap: 20px;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #4a4a4a;
+    font-weight: 500;
+    font-size: 1em;
+  }
+
+  nav a:hover {
+    color: #007bff;
+  }
+
+  /* CTA Button */
+  .btn-signup {
+    background-color: #4a4a4a;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  .btn-signup:hover {
+    background-color: #007bff;
+  }
+
+  /* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+    max-width: 1200px;
+    margin: auto;
+    flex-wrap: wrap;
+  }
+
+  .hero-text {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  .hero-text h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #2e2e2e;
+  }
+
+  .hero-text p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+  }
+
+  /* Buttons in hero section */
+  .hero-btn {
+    padding: 15px 30px;
+    font-size: 1em;
+    border: none;
+    border-radius: 25px;
+    background-color: #4a4a4a;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 15px;
+  }
+
+  .hero-btn:hover {
+    background-color: #007bff;
+  }
+
+  /* Image section */
+  .hero-img {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-img img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Responsive adjustments */
+  @media(max-width: 768px) {
+    .hero {
+      flex-direction: column;
+      text-align: center;
+    }
+    .hero-img {
+      margin-top: 30px;
+    }
+  }
+</style>
+</head>
 <body>
 
-<div class="container">
-    <h1>Resume Builder</h1>
+<!-- Header -->
+<header class="header">
+  <div class="logo">
+    <!-- You can replace this SVG with your logo -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#4a4a4a" viewBox="0 0 24 24">
+      <path d="M4 4h16v2H4V4zm0 5h16v2H4V9zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/>
+    </svg>
+    <span>My CV Creator</span>
+  </div>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="dashboard.html">Template</a>
+  <a href="dashboard.html">Services</a>
+  <a href="resume_form.html">Order Resume</a>
+  <a href="#">Blog</a>
+  <a href="#">Job Alert</a>
+  <a href="resume.html">Login</a>
+  <a href="resume.html" class="btn-signup">Sign Up</a>
+</nav>
+</header>
 
-```
-<!-- TOGGLE BUTTONS -->
-<div class="toggle-buttons">
-    <button type="button" id="loginBtn" class="active" onclick="showLogin()">Login</button>
-    <button type="button" id="signupBtn" onclick="showSignup()">Sign Up</button>
-</div>
-
-<!-- LOGIN FORM -->
-<div id="loginForm">
-    <input type="text" id="loginUser" placeholder="Username">
-    <input type="password" id="loginPass" placeholder="Password">
-    <button type="button" class="submit-btn" onclick="login()">Login</button>
-</div>
-
-<!-- SIGNUP FORM -->
-<div id="signupForm" style="display:none;">
-    <input type="text" id="signupUser" placeholder="Create Username">
-    <input type="password" id="signupPass" placeholder="Create Password">
-    <button type="button" class="submit-btn" onclick="signup()">Sign Up</button>
-</div>
-```
-
-</div>
-
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Create a compelling CV with AI assistance in minutes</h1>
+    <p>Online resume builder with AI assistance. Seamlessly create an exceptional resume/CV with AI-powered features.</p>
+    <button class="hero-btn">Get Started</button>
+    <button class="hero-btn" style="background-color:#007bff;">Learn More</button>
+  </div>
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4" alt="Resume">
+  </div>
+</section>
 <script src="script.js"></script>
-
 </body>
 </html>
