@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resume Builder</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    /* Gradient background matching your theme */
+    background: linear-gradient(135deg, #ff4d4d, #ffe6e6);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+
+  h1 {
+    color: #c00; /* dark red */
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* Red button style */
+  .btn-red {
+    background-color: #c00;
+    color: #fff;
+  }
+
+  /* Gray button style for Sign Up */
+  .btn-gray {
+    background-color: #eee;
+    color: #333;
+  }
+
+  /* Input styles */
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  /* Link style for Sign Up button to look like a button */
+  .link-button {
+    display: inline-block;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Resume Builder</h1>
+  <button class="btn-red" onclick="showLogin()">Login</button>
+  <button class="btn-gray" onclick="showSignUp()">Sign Up</button>
+
+  <div id="login-form" style="display:none; margin-top:20px;">
+    <input type="text" placeholder="Username" id="login-username" />
+    <input type="password" placeholder="Password" id="login-password" />
+    <button class="btn-red" onclick="handleLogin()">Login</button>
+  </div>
+
+  <div id="signup-form" style="display:none; margin-top:20px;">
+    <input type="text" placeholder="Username" id="signup-username" />
+    <input type="password" placeholder="Password" id="signup-password" />
+    <button class="btn-red" onclick="handleSignUp()">Sign Up</button>
+  </div>
+</div>
+
+<script>
+  function showLogin() {
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('signup-form').style.display = 'none';
+  }
+
+  function showSignUp() {
+    document.getElementById('signup-form').style.display = 'block';
+    document.getElementById('login-form').style.display = 'none';
+  }
+
+async function handleLogin() {
+    let user = document.getElementById("login-username").value;
+    let pass = document.getElementById("login-password").value;
+
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: user, password: pass })
+        });
+        
+        if (response.ok) {
+            alert("Login successful!");
+            localStorage.setItem("loggedInUser", user);
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Invalid credentials!");
+        }
+    } catch (err) {
+        alert("Server error!");
+    }
+}
+
+async function handleSignUp() {
+    let user = document.getElementById("signup-username").value;
+    let pass = document.getElementById("signup-password").value;
+
+    if (user && pass) {
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: user, password: pass })
+            });
+            const data = await response.json();
+            
+            if (response.ok) {
+                alert("Account created! Now login.");
+                showLogin();
+            } else {
+                alert("Error: " + data.error);
+            }
+        } catch (err) {
+            alert("Server error!");
+        }
+    } else {
+        alert("Please fill all fields");
+    }
+}
+</script>
+
+</body>
+</html>

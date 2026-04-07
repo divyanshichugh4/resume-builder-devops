@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Builder Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  .notice {
+    background-color: #00bfff; /* Light blue background */
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  form {
+    max-width: 900px;
+    margin: auto;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  input[type="text"], input[type="date"], select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .row {
+    display: flex;
+    gap: 20px;
+  }
+  .row .form-group {
+    flex: 1;
+  }
+  .submit-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    float: right;
+  }
+</style>
+</head>
+<body>
+
+<div class="notice">
+  We suggest including an email and phone number.
+</div>
+
+<form>
+  <div class="row">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" name="firstName" placeholder="First Name" />
+    </div>
+    <div class="form-group">
+      <label for="middleName">Middle Name (Optional)</label>
+      <input type="text" id="middleName" name="middleName" placeholder="Middle Name" />
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" name="lastName" placeholder="Last Name" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="gender">Gender (Optional)</label>
+      <select id="gender" name="gender">
+        <option value="">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="dob">Date of Birth (Optional)</label>
+      <input type="date" id="dob" name="dob" />
+    </div>
+    <div class="form-group">
+      <label for="maritalStatus">Marital Status (Optional)</label>
+      <select id="maritalStatus" name="maritalStatus">
+        <option value="">Select</option>
+        <option value="single">Single</option>
+        <option value="married">Married</option>
+        <option value="divorced">Divorced</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="profession">Profession</label>
+      <input type="text" id="profession" name="profession" placeholder="e.g. Sr. Accountant" />
+    </div>
+    <div class="form-group">
+      <label for="streetAddress">Street Address</label>
+      <input type="text" id="streetAddress" name="streetAddress" placeholder="Street Address" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="city">City</label>
+      <input type="text" id="city" name="city" placeholder="City" />
+    </div>
+    <div class="form-group">
+      <label for="state">State/Province</label>
+      <select id="state" name="state" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        <option value="">Select State</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="nationality">Nationality (Optional)</label>
+      <select id="nationality" name="nationality">
+        <option value="">Select Country</option>
+        <!-- Add country options here -->
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="passport">Passport Number (Optional)</label>
+      <input type="text" id="passport" name="passport" placeholder="Passport Number" />
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" name="phone" placeholder="Phone" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" placeholder="Email" />
+    </div>
+  </div>
+
+  <div id="professional-fields" style="display: none; background: #eef2f7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <h3 style="margin-top: 0;">Professional Details</h3>
+    <div class="row">
+      <div class="form-group" style="flex:1;">
+        <label for="profileSummary">Profile Summary</label>
+        <textarea id="profileSummary" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" rows="3" placeholder="Brief summary about yourself..."></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <label for="profSkills">Skills (Comma Separated)</label>
+        <input type="text" id="profSkills" placeholder="e.g. Java, Python, SQL" />
+      </div>
+      <div class="form-group">
+        <label for="profLanguages">Languages (Comma Separated)</label>
+        <input type="text" id="profLanguages" placeholder="e.g. English, Spanish" />
+      </div>
+      <div class="form-group">
+        <label for="profHobbies">Hobbies (Comma Separated)</label>
+        <input type="text" id="profHobbies" placeholder="e.g. Reading, Traveling" />
+      </div>
+    </div>
+    <h4 style="margin-bottom:10px;">Work Experience</h4>
+    <div class="row">
+      <div class="form-group">
+        <label for="jobTitle">Job Title</label>
+        <input type="text" id="jobTitle" placeholder="e.g. Senior Developer" />
+      </div>
+      <div class="form-group">
+        <label for="jobCompany">Company & Location</label>
+        <input type="text" id="jobCompany" placeholder="e.g. Tech Corp - USA" />
+      </div>
+      <div class="form-group">
+        <label for="jobDates">Dates</label>
+        <input type="text" id="jobDates" placeholder="e.g. Jan 2020 - Present" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group" style="flex:1;">
+        <label for="jobDesc">Job Responsibilities</label>
+        <textarea id="jobDesc" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" rows="3" placeholder="Bullet points or summary of duties..."></textarea>
+      </div>
+    </div>
+    <h4 style="margin-bottom:10px;">Education</h4>
+    <div class="row">
+      <div class="form-group">
+        <label for="eduDegree">Degree</label>
+        <input type="text" id="eduDegree" placeholder="e.g. B.S. Computer Science" />
+      </div>
+      <div class="form-group">
+        <label for="eduSchool">School / University</label>
+        <input type="text" id="eduSchool" placeholder="e.g. XYZ University" />
+      </div>
+      <div class="form-group">
+        <label for="eduDates">Dates</label>
+        <input type="text" id="eduDates" placeholder="e.g. Sep 2015 - May 2019" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="photo-row" style="display: none;">
+    <div class="form-group">
+      <label>Profile Photo</label>
+      <input type="file" id="photo" accept="image/*">
+    </div>
+  </div>
+
+  <button type="button" class="submit-btn" onclick="saveResume()">Save</button>
+</form>
+<script>
+function saveResume() {
+    let user = localStorage.getItem("loggedInUser");
+
+    if (!user) {
+        alert("Please login first!");
+        window.location.href = "index.html";
+        return;
+    }
+
+    // ✅ Get selected template
+    let template = localStorage.getItem("selectedTemplate");
+
+    // ✅ Create resume object
+    let resumeData = {
+        template: template,
+        firstName: document.getElementById("firstName").value,
+        middleName: document.getElementById("middleName").value,
+        lastName: document.getElementById("lastName").value,
+        gender: document.getElementById("gender").value,
+        dob: document.getElementById("dob").value,
+        maritalStatus: document.getElementById("maritalStatus").value,
+        profession: document.getElementById("profession").value,
+        address: document.getElementById("streetAddress").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        nationality: document.getElementById("nationality").value,
+        passport: document.getElementById("passport").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+        
+        // Professional optional fields properly extracted
+        profileSummary: document.getElementById("profileSummary") ? document.getElementById("profileSummary").value : "",
+        skills: document.getElementById("profSkills") ? document.getElementById("profSkills").value : "",
+        languages: document.getElementById("profLanguages") ? document.getElementById("profLanguages").value : "",
+        hobbies: document.getElementById("profHobbies") ? document.getElementById("profHobbies").value : "",
+        jobTitle: document.getElementById("jobTitle") ? document.getElementById("jobTitle").value : "",
+        jobCompany: document.getElementById("jobCompany") ? document.getElementById("jobCompany").value : "",
+        jobDates: document.getElementById("jobDates") ? document.getElementById("jobDates").value : "",
+        jobDesc: document.getElementById("jobDesc") ? document.getElementById("jobDesc").value : "",
+        eduDegree: document.getElementById("eduDegree") ? document.getElementById("eduDegree").value : "",
+        eduSchool: document.getElementById("eduSchool") ? document.getElementById("eduSchool").value : "",
+        eduDates: document.getElementById("eduDates") ? document.getElementById("eduDates").value : ""
+    };
+
+    let photoElem = document.getElementById("photo");
+    let file = photoElem ? photoElem.files[0] : null;
+
+    if (file) {
+        let reader = new FileReader();
+        reader.onload = function () {
+            resumeData.photo = reader.result;
+            finishSaving(resumeData, user);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        resumeData.photo = null;
+        finishSaving(resumeData, user);
+    }
+
+    async function finishSaving(data, user) {
+        // Save to LocalStorage as a local backup
+        let resumes = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
+        resumes.push(data);
+        localStorage.setItem("resumes_" + user, JSON.stringify(resumes));
+        localStorage.setItem("resume_" + user, JSON.stringify(data));
+
+        // Save to Database via API
+        try {
+            await fetch('/api/resumes', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username: user, resumeData: data })
+            });
+        } catch(e) {
+            console.warn("Backend not reachable. Saved locally.");
+        }
+
+        alert("Resume Saved Successfully!");
+        window.location.href = "preview.html";
+    }
+}
+
+// ✅ Protect page
+window.onload = function () {
+    let user = localStorage.getItem("loggedInUser");
+
+    if (!user) {
+        alert("Please login first!");
+        window.location.href = "index.html";
+    }
+
+    let template = localStorage.getItem("selectedTemplate");
+    if (template === "template3") {
+        document.getElementById("photo-row").style.display = "flex";
+        document.getElementById("professional-fields").style.display = "block";
+    }
+};
+
+// ✅ Fetch Countries and States from free public API
+let globalCountryData = [];
+
+fetch("https://countriesnow.space/api/v0.1/countries/states")
+    .then(response => response.json())
+    .then(result => {
+        if(!result || !result.data) return;
+        globalCountryData = result.data;
+        let nationalitySelect = document.getElementById("nationality");
+        
+        // Populate Countries
+        globalCountryData.forEach(countryObj => {
+            let opt = document.createElement("option");
+            opt.value = countryObj.name;
+            opt.innerHTML = countryObj.name;
+            nationalitySelect.appendChild(opt);
+        });
+    })
+    .catch(error => console.error("Error fetching countries:", error));
+
+// Provide responsive State options based on Country selection
+document.getElementById("nationality").addEventListener("change", function() {
+    let stateSelect = document.getElementById("state");
+    stateSelect.innerHTML = '<option value="">Select State</option>'; // reset on change
+    
+    let selectedCountry = this.value;
+    let countryObj = globalCountryData.find(c => c.name === selectedCountry);
+    
+    if (countryObj && countryObj.states && countryObj.states.length > 0) {
+        countryObj.states.forEach(stateObj => {
+            let opt = document.createElement("option");
+            opt.value = stateObj.name;
+            opt.innerHTML = stateObj.name;
+            stateSelect.appendChild(opt);
+        });
+    } else if (selectedCountry) {
+        // Fallback for countries with no states
+        let opt = document.createElement("option");
+        opt.value = "N/A";
+        opt.innerHTML = "No States Available";
+        stateSelect.appendChild(opt);
+    }
+});
+</script>
+</body>
+</html>

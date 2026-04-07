@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Select Resume Template</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  /* Button style */
+  .open-modal-btn {
+    display: block;
+    margin: 50px auto;
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* Modal styles */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 900px;
+    position: relative;
+  }
+
+  /* Close button */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  /* Template cards container */
+  .templates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  /* Each template card */
+  .card {
+    width: 200px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+  .card img {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  /* Button inside modal to select */
+  .select-btn {
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1 style="text-align: center;">Choose a Resume Template</h1>
+
+<!-- Button to open modal -->
+<button class="open-modal-btn" onclick="openModal()">Select Template</button>
+
+<!-- The Modal -->
+<div id="templateModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 style="text-align: center;">Select a Template</h2>
+    <div class="templates">
+      <!-- Template 1 -->
+      <div class="card" onclick="selectTemplate('template1')">
+        <img src=https://images.openai.com/static-rsc-4/d8XyJ8ntG-UFCmiA1Re1S5q6EToeW2TJd71X0_AZdCksDs5E_Zbt4BLWvr_ZsVDmUJpmrFaxDGXnO2LXSVC-i_AXwowPTQ7X_2MSoVoL2xee_sW6vHcDeChGw4TB_Vic_lEh_Jr0OeSUP73SPr-mPVcS_1_AQg7u9FaumpZqhNVF8FpHCCmiPypenQrsoAzt?purpose=fullsize />
+        <p style="text-align: center;">Simple</p>
+      </div>
+      <!-- Template 2 -->
+      <div class="card" onclick="selectTemplate('template2')">
+         <img src= https://images.openai.com/static-rsc-4/EqC2WcxjjmxuoXxc0nlHPsoXT8mirJSsgWBf3AkT9wQQxSf3r9J8P7lRaTK2jTC7w7DfAXD-bg71aboycFS1rMSNsZGO7QmIw1K-G-NtOciRV3K-SSZoQzbPIrxO8gvoHv7yNBDGE98H1gJAcw0eqUockUxqPfjphWGH3OacAQFmIoig9GlA5jC5WrrY93nI?purpose=fullsize />
+        <p style="text-align: center;">Modern</p>
+      </div>
+      <!-- Template 3 -->
+      <div class="card" onclick="selectTemplate('template3')">
+        <img src=https://images.openai.com/static-rsc-4/ARvJQbrR2w68SoSOcpGNBhnGpZshtLbYbHJ01cfdlhPf4JTlr098wAp5lXl6A18zvifwHf1fvWhVUEjUJ_Z1NbjCsafkgSW8sZu1PlIkkaSW-Tr_v36-UxP9FJKqy9M43P75pDV35nyWG9wPG-8Xao2MF-fTxAhlljRJgkYeQhQL7JGmU3ryJ3u4Pr9tuR4y?purpose=fullsize />
+        <p style="text-align: center;">Professional</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('templateModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('templateModal').style.display = 'none';
+  }
+
+  function selectTemplate(template) {
+    localStorage.setItem("selectedTemplate", template);
+    closeModal();
+    // Redirect to your builder page
+    window.location.href = "builder.html";
+  }
+
+  // Close modal when clicking outside of the modal content
+  window.onclick = function(event) {
+    const modal = document.getElementById('templateModal');
+    if (event.target == modal) {
+      closeModal();
+    }
+  }
+</script>
+
+</body>
+</html>
