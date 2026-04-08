@@ -141,6 +141,7 @@ body {
     <section class="section">
       <h3>Your Recent Resumes</h3>
       <p>Here you can see your latest resumes or create new ones.</p>
+      <div id="resumeList" style="margin-top: 15px;"></div>
     </section>
 
     <section class="section" style="margin-top:20px;">
@@ -161,44 +162,42 @@ function logout() {
   window.location.href = "index.html";
 }
 
-/* Show logged in user */
-window.onload = function () {
+async function loadResumes() {
   let user = localStorage.getItem("loggedInUser");
-
-  if (!user) {
-    alert("Please login first!");
-    window.location.href = "index.html";
-  } else {
-    document.getElementById("welcomeUser").innerText = "Welcome, " + user;
-  }
-};
-</script>
-<script>
-function loadResumes() {
-  let user = localStorage.getItem("loggedInUser");
-  let resumes = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
-
+  
   let html = "";
+  let resumeData = null;
 
-  if (resumes.length === 0) {
-    html = "<p>No resumes yet.</p>";
+  // Try fetching from the backend API first
+  try {
+      let res = await fetch('/api/resumes/' + user);
+      let result = await res.json();
+      if(result.success && result.resume) {
+          resumeData = result.resume;
+      } else {
+          // Fallback to local storage
+          resumeData = JSON.parse(localStorage.getItem("resume_" + user));
+      }
+  } catch(err) {
+      resumeData = JSON.parse(localStorage.getItem("resume_" + user));
+  }
+
+  if (!resumeData) {
+    html = "<p style='color:#777;font-style:italic;'>No resumes made yet. Create one!</p>";
   } else {
-    resumes.forEach((r, index) => {
-      html += `
-        <div style="margin-top:10px;padding:10px;border:1px solid #ddd;border-radius:8px;">
-          <b>${r.firstName} ${r.lastName}</b> - ${r.profession}
-          <br>
-          <button onclick="viewResume(${index})">View</button>
-        </div>
-      `;
-    });
+    html = `
+      <div style="margin-top:10px;padding:15px;border:1px solid #ddd;border-radius:8px;background:#f9f9f9;">
+        <b style="font-size:16px;">${resumeData.firstName || 'My'} ${resumeData.lastName || 'Resume'}</b> - <span style="color:#555;">${resumeData.profession || ''}</span>
+        <br><br>
+        <button onclick="viewActiveResume()" style="padding:10px 20px;background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">View Full Resume</button>
+      </div>
+    `;
   }
 
   document.getElementById("resumeList").innerHTML = html;
 }
 
-function viewResume(index) {
-  localStorage.setItem("currentResumeIndex", index);
+function viewActiveResume() {
   window.location.href = "preview.html";
 }
 
