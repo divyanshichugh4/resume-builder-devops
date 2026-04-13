@@ -166,38 +166,46 @@ async function loadResumes() {
   let user = localStorage.getItem("loggedInUser");
   
   let html = "";
-  let resumeData = null;
+  let resumesList = [];
 
   // Try fetching from the backend API first
   try {
       let res = await fetch('/api/resumes/' + user);
       let result = await res.json();
-      if(result.success && result.resume) {
-          resumeData = result.resume;
+      if(result.success && result.resumes && result.resumes.length > 0) {
+          resumesList = result.resumes;
       } else {
           // Fallback to local storage
-          resumeData = JSON.parse(localStorage.getItem("resume_" + user));
+          resumesList = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
       }
   } catch(err) {
-      resumeData = JSON.parse(localStorage.getItem("resume_" + user));
+      resumesList = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
   }
 
-  if (!resumeData) {
+  if (resumesList.length === 0) {
     html = "<p style='color:#777;font-style:italic;'>No resumes made yet. Create one!</p>";
   } else {
-    html = `
-      <div style="margin-top:10px;padding:15px;border:1px solid #ddd;border-radius:8px;background:#f9f9f9;">
-        <b style="font-size:16px;">${resumeData.firstName || 'My'} ${resumeData.lastName || 'Resume'}</b> - <span style="color:#555;">${resumeData.profession || ''}</span>
-        <br><br>
-        <button onclick="viewActiveResume()" style="padding:10px 20px;background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">View Full Resume</button>
-      </div>
-    `;
+    // Generate HTML for each resume (newest first)
+    [...resumesList].reverse().forEach((resumeData, i) => {
+      let index = resumesList.length - 1 - i;
+      html += `
+        <div style="margin-top:10px;padding:15px;border:1px solid #ddd;border-radius:8px;background:#f9f9f9; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <b style="font-size:16px;">${resumeData.firstName || resumeData.name || 'My'} ${resumeData.lastName || 'Resume'}</b> 
+            <br>
+            <span style="color:#555;">${resumeData.profession || 'Professional'}</span>
+          </div>
+          <button onclick="viewActiveResume(${index})" style="padding:10px 20px;background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">View Full Resume</button>
+        </div>
+      `;
+    });
   }
 
   document.getElementById("resumeList").innerHTML = html;
 }
 
-function viewActiveResume() {
+function viewActiveResume(index) {
+  localStorage.setItem("viewResumeIndex", index);
   window.location.href = "preview.html";
 }
 

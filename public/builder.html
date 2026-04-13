@@ -282,6 +282,7 @@ function saveResume() {
         resumes.push(data);
         localStorage.setItem("resumes_" + user, JSON.stringify(resumes));
         localStorage.setItem("resume_" + user, JSON.stringify(data));
+        localStorage.setItem("viewResumeIndex", resumes.length - 1);
 
         // Save to Database via API
         try {

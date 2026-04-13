@@ -65,7 +65,12 @@ app.post('/api/resumes', (req, res) => {
     if (!username || !resumeData) return res.status(400).json({ error: 'Missing data' });
     
     let data = loadData();
-    data.resumes[username] = resumeData;
+    if (!data.resumes[username]) {
+        data.resumes[username] = [];
+    } else if (!Array.isArray(data.resumes[username])) {
+        data.resumes[username] = [data.resumes[username]];
+    }
+    data.resumes[username].push(resumeData);
     saveData(data);
     res.json({ success: true });
 });
@@ -74,11 +79,14 @@ app.post('/api/resumes', (req, res) => {
 app.get('/api/resumes/:username', (req, res) => {
     const { username } = req.params;
     let data = loadData();
-    let resume = data.resumes[username];
-    if (resume) {
-        res.json({ success: true, resume: resume });
+    let resumes = data.resumes[username];
+    if (resumes) {
+        if (!Array.isArray(resumes)) {
+            resumes = [resumes];
+        }
+        res.json({ success: true, resumes: resumes });
     } else {
-        res.json({ success: false, error: 'Not found' }); // Returning 200 with false success simplifies frontend logic initially
+        res.json({ success: true, resumes: [] });
     }
 });
 

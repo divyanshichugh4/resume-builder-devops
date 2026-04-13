@@ -345,14 +345,32 @@ let data;
 try {
   let res = await fetch('/api/resumes/' + user);
   let result = await res.json();
-  if(result.success && result.resume) {
-      data = result.resume;
+  if(result.success && result.resumes && result.resumes.length > 0) {
+      let viewIndex = parseInt(localStorage.getItem("viewResumeIndex"));
+      if (isNaN(viewIndex) || viewIndex >= result.resumes.length || viewIndex < 0) {
+          viewIndex = result.resumes.length - 1;
+      }
+      data = result.resumes[viewIndex];
   } else {
-      data = JSON.parse(localStorage.getItem("resume_" + user));
+      let resumesList = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
+      let viewIndex = parseInt(localStorage.getItem("viewResumeIndex"));
+      if (resumesList.length > 0) {
+          if (isNaN(viewIndex) || viewIndex >= resumesList.length || viewIndex < 0) viewIndex = resumesList.length - 1;
+          data = resumesList[viewIndex];
+      } else {
+          data = JSON.parse(localStorage.getItem("resume_" + user));
+      }
   }
 } catch(err) {
   console.warn("Backend unreachable. Loading local backup...");
-  data = JSON.parse(localStorage.getItem("resume_" + user));
+  let resumesList = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
+  let viewIndex = parseInt(localStorage.getItem("viewResumeIndex"));
+  if (resumesList.length > 0) {
+      if (isNaN(viewIndex) || viewIndex >= resumesList.length || viewIndex < 0) viewIndex = resumesList.length - 1;
+      data = resumesList[viewIndex];
+  } else {
+      data = JSON.parse(localStorage.getItem("resume_" + user));
+  }
 }
 
 if (!data) {

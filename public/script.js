@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem("resumes_" + user, JSON.stringify(resumes));
 
                 localStorage.setItem("resume_" + user, JSON.stringify(resumeData));
+                localStorage.setItem("viewResumeIndex", resumes.length - 1);
 
                 alert("Resume Saved!");
                 window.location.href = "preview.html";
@@ -95,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem("resumes_" + user, JSON.stringify(resumes));
 
             localStorage.setItem("resume_" + user, JSON.stringify(resumeData));
+            localStorage.setItem("viewResumeIndex", resumes.length - 1);
 
             alert("Resume Saved!");
             window.location.href = "preview.html";
