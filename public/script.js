@@ -1,4 +1,4 @@
-// script.js
+// script.js for core feature integration
 
 // Example: Add event listeners for buttons or other interactive elements
 
