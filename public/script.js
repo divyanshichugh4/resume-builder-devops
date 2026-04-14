@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
+    // function for resume saving
     function saveResume() {
         let name = document.getElementById("name") ? document.getElementById("name").value : "";
         let email = document.getElementById("email") ? document.getElementById("email").value : "";
