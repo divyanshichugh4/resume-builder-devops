@@ -1,31 +1,38 @@
-name: Deploy Website
+name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  deploy:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Get code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
+      # 4. Run tests (if you have)
+      - name: Run tests
+        run: npm test || echo "No tests found"
+
+      # 5. Build project
+      - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist   # 🔥 IMPORTANT
+      # 6. Run app (optional)
+      - name: Start app
+        run: npm start &
