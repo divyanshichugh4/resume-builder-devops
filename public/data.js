@@ -1,3 +1,4 @@
+// this contain all the required data
 const services = [
   { id: 1, name: "Resume Writing", price: "₹500" },
   { id: 2, name: "LinkedIn Optimization", price: "₹300" }
