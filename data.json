@@ -7,6 +7,11 @@
     {
       "username": "JiyaKumari",
       "password": "12345678"
+    },
+    {
+      "username": "divyanshi4456@gmail.com",
+      "password": "",
+      "isGoogleAuth": true
     }
   ],
   "resumes": {

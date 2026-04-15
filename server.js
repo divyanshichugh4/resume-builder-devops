@@ -6,6 +6,12 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose'); // ✅ added
+const { OAuth2Client } = require('google-auth-library');
+
+// We use the environment variable if available, otherwise a placeholder.
+// The user MUST provide a valid client ID for the Google Sign-In to fully work and be verified securely.
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '1016595135927-hhrisfu8j05llfvsl0n2cjbr8b7cqp43.apps.googleusercontent.com';
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -131,6 +137,43 @@ app.get('/api/resumes/:username', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Database error' });
+    }
+});
+
+// API: Google Login
+app.post('/api/google-login', async (req, res) => {
+    const { credential } = req.body;
+    if (!credential) return res.status(400).json({ error: 'Missing credential' });
+
+    try {
+        let payload;
+        try {
+             const ticket = await client.verifyIdToken({
+                 idToken: credential,
+                 audience: GOOGLE_CLIENT_ID,
+             });
+             payload = ticket.getPayload();
+        } catch (verifyError) {
+             console.warn("Token verification skipped or failed. This might be because you are using a placeholder Client ID.");
+             return res.status(401).json({ error: 'Token verification failed. Do you have a valid GOOGLE_CLIENT_ID configured?' });
+        }
+        
+        const email = payload.email;
+        if (!email) {
+            return res.status(400).json({ error: 'No email found in Google token' });
+        }
+
+        let user = await User.findOne({ username: email });
+        if (!user) {
+            const newUser = new User({ username: email, password: 'google-oauth-placeholder-password' });
+            await newUser.save();
+        }
+        
+        res.json({ success: true, username: email });
+
+    } catch (err) {
+        console.error("Google login error:", err);
+        res.status(500).json({ error: 'Internal server error during Google login' });
     }
 });
 
