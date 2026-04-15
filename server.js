@@ -59,6 +59,22 @@ app.post('/api/login', (req, res) => {
     }
 });
 
+// API: Reset Password
+app.post('/api/reset-password', (req, res) => {
+    const { username, newPassword } = req.body;
+    if(!username || !newPassword) return res.status(400).json({ error: 'Missing username or new password' });
+
+    let data = loadData();
+    let user = data.users.find(u => u.username === username);
+    if (user) {
+        user.password = newPassword;
+        saveData(data);
+        res.json({ success: true });
+    } else {
+        res.status(404).json({ error: 'User not found' });
+    }
+});
+
 // API: Save Resume
 app.post('/api/resumes', (req, res) => {
     const { username, resumeData } = req.body;

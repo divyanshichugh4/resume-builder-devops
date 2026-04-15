@@ -125,10 +125,10 @@ body {
   <div class="sidebar">
     <h3>Navigation</h3>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="#" onclick="showSection('resumes-section')">My Resumes</a>
+      <a href="#" onclick="showSection('home')">Home</a>
+      <a href="#" onclick="showSection('resumes')">My Resumes</a>
       <a href="templates.html">Templates</a>
-      <a href="#" onclick="showSection('profile-section')">Profile</a>
+      <a href="#" onclick="showSection('profile')">Profile</a>
       <a href="#" onclick="logout()">Logout</a>
     </div>
   </div>
@@ -136,25 +136,25 @@ body {
   <!-- Main Content -->
   <div class="main-content">
 
-    <!-- Resumes Section -->
-    <div id="resumes-section">
-      <section class="section">
-        <h3>Your Recent Resumes</h3>
-        <p>Here you can see your latest resumes or create new ones.</p>
-        <div id="resumeList" style="margin-top: 15px;"></div>
-      </section>
-
+    <div id="home-section">
       <section class="section" style="margin-top:20px;">
         <h3>Start Creating a New Resume</h3>
         <button class="create-btn" onclick="openBuilder()">Create New</button>
       </section>
     </div>
 
-    <!-- Profile Section -->
-    <div id="profile-section" style="display: none;">
+    <div id="resumes-section" style="display:none;">
+      <section class="section">
+        <h3>Your Recent Resumes</h3>
+        <p>Here you can see your latest resumes or create new ones.</p>
+        <div id="resumeList" style="margin-top: 15px;"></div>
+      </section>
+    </div>
+
+    <div id="profile-section" style="display:none;">
       <section class="section">
         <h3>User Profile</h3>
-        <div style="margin-top: 15px; padding: 20px; background: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
+        <div style="margin-top:15px; padding:20px; background:#f9f9f9; border:1px solid #ddd; border-radius:8px;">
           <p style="font-size: 18px; margin-bottom: 10px;"><strong>Username:</strong> <span id="profileUsername"></span></p>
           <p style="font-size: 18px; margin-bottom: 10px;"><strong>Total Resumes Saved:</strong> <span id="profileTotalResumes">0</span></p>
         </div>
@@ -165,6 +165,23 @@ body {
 </div>
 
 <script>
+function showSection(section) {
+  document.getElementById('home-section').style.display = (section === 'home') ? 'block' : 'none';
+  document.getElementById('resumes-section').style.display = (section === 'resumes') ? 'block' : 'none';
+  document.getElementById('profile-section').style.display = (section === 'profile') ? 'block' : 'none';
+
+  if (section === 'resumes') {
+    // load resumes when navigating to My Resumes
+    loadResumes();
+  } else if (section === 'profile') {
+    // load profile data
+    let user = localStorage.getItem("loggedInUser");
+    document.getElementById('profileUsername').innerText = user || 'Unknown';
+    let resumesList = JSON.parse(localStorage.getItem("resumes_" + user)) || [];
+    document.getElementById('profileTotalResumes').innerText = resumesList.length;
+  }
+}
+
 function openBuilder() {
   window.location.href = "templates.html";
 }
@@ -215,8 +232,14 @@ async function loadResumes() {
   }
 
   document.getElementById("resumeList").innerHTML = html;
-  document.getElementById("profileUsername").innerText = user;
-  document.getElementById("profileTotalResumes").innerText = resumesList.length;
+  
+  // Also update profile variables just in case
+  if (document.getElementById("profileUsername")) {
+    document.getElementById("profileUsername").innerText = user || 'Unknown';
+  }
+  if (document.getElementById("profileTotalResumes")) {
+    document.getElementById("profileTotalResumes").innerText = resumesList.length;
+  }
 }
 
 function viewActiveResume(index) {
@@ -232,18 +255,10 @@ window.onload = function () {
     window.location.href = "index.html";
   } else {
     document.getElementById("welcomeUser").innerText = "Welcome, " + user;
-    loadResumes();
+    // Show home section by default
+    showSection('home');
   }
 };
-
-function showSection(sectionId) {
-  document.getElementById('resumes-section').style.display = 'none';
-  document.getElementById('profile-section').style.display = 'none';
-  
-  if(document.getElementById(sectionId)) {
-    document.getElementById(sectionId).style.display = 'block';
-  }
-}
 </script>
 <script src="data.js"></script>
 <script src="script.js"></script>

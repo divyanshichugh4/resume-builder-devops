@@ -1,4 +1,4 @@
-// script.js
+// script.js for core feature integration
 
 // Example: Add event listeners for buttons or other interactive elements
 
@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
+    // function for resume saving
     function saveResume() {
         let name = document.getElementById("name") ? document.getElementById("name").value : "";
         let email = document.getElementById("email") ? document.getElementById("email").value : "";

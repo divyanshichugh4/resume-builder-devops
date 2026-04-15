@@ -1,14 +1,18 @@
+// this contain all the required data
 const services = [
-  { title: "Resume Writing", desc: "Professional resumes" },
-  { title: "Portfolio Design", desc: "Make your portfolio" }
+  { id: 1, name: "Resume Writing", price: "₹500" },
+  { id: 2, name: "LinkedIn Optimization", price: "₹300" }
 ];
 
 const blogs = [
-  { title: "How to crack interviews", content: "Tips..." },
-  { title: "Top skills 2025", content: "Trending skills..." }
+  { id: 1, title: "How to make ATS friendly resume" },
+  { id: 2, title: "Top skills in 2026" }
 ];
 
 const jobs = [
-  { title: "Frontend Developer", company: "Google" },
-  { title: "Backend Developer", company: "Amazon" }
+  { id: 1, role: "Frontend Developer", company: "TCS" },
+  { id: 2, role: "Backend Developer", company: "Infosys" }
+];const resumes = [
+  { name: "Rahul", title: "Frontend Dev", date: "2026-04-10" },
+  { name: "Amit", title: "Backend Dev", date: "2026-04-11" }
 ];
