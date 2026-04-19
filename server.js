@@ -16,6 +16,19 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
 
+mongoose.connection.once('open', async () => {
+    console.log("MongoDB formally opened");
+
+    const testCollection = mongoose.connection.db.collection("test");
+
+    await testCollection.insertOne({
+        name: "Jiya",
+        message: "Hello MongoDB"
+    });
+
+    console.log("Test data inserted");
+});
+
 app.use(cors());
 // Set a larger body limit because resumes can contain 2MB+ base64 encoded profile photos
 app.use(bodyParser.json({ limit: '20mb' }));
