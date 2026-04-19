@@ -1,57 +1,44 @@
-# Dynamic Resume Builder (DevOps Ready)
+# Full-Stack Resume Builder
 
-A full-stack, local web application designed to help users painlessly build, organize, and export stunning resumes. Featuring a fully dynamic data entry engine and natively built to support CI/CD pipelines.
+## Problem Statement
+Creating professional, visually appealing, and ATS-friendly resumes is often a tedious process. This project solves this by providing a unified web platform that enables users to easily build, save, and manage their resumes dynamically. By instituting a streamlined authentication process and persistent database storage, users have continuous access to their historical professional data without fearing data loss.
 
-## Features
+## Architecture Diagram
+```mermaid
+graph TD
+    A[Client/Browser] -->|HTTP Requests| B(Express.js Backend)
+    B -->|Mongoose Queries| C[(MongoDB Database)]
+    A -->|OAuth Redirects| D[Google Cloud Console]
+    D -->|Callback| B
+```
 
-- **Authentication System**: Secure user login and registration to ensure multiple distinct individuals can maintain private workspaces and dashboards.
-- **Dynamic Template Framework**: At its core, the builder doesn't ask you to answer questions irrelevant to the design you chose. The builder form observes your selected template layout and strictly toggles the visibility of the form fields to ensure a frictionless user experience (e.g., hiding Profile Photo options if the template doesn't utilize photography). 
-- **Live Miniature Overviews**: Visual live-rendered mini-previews of templates right from your dashboard ensuring you know exactly what design you're embarking on. 
-- **Local Application Storage Engine**: Retains persistent collections of resumes utilizing dynamic `JSON` databases mapped cleanly over REST endpoints.
-- **Export To PDF**: Effortlessly save or print any completed resume layout tightly configured for standard web print output.
+## CI/CD Pipeline Explanation
+The continuous integration and deployment pipeline operates through **Render**. Render continuously listens to webhooks triggered by pushes to the remote `main` branch on our GitHub repository. Once a commit is detected (like configuration changes or UI updates), Render automatically builds the node environment (executing `npm install` dynamically) and provisions the Express server without any manual intervention, ensuring zero-downtime rolling updates.
 
-## Included Templates
+## Git Workflow Used
+The project utilizes a structured **Feature Branching and Rebasing** workflow:
+- Development is typically handled by creating separate branches or pulling targeted PRs.
+- Interactive Rebasing (`git pull --rebase`) is used heavily to prevent unnecessary merge commit clutter and align parallel backend modifications (auth flows vs. db schemas).
+- Conflicts are manually resolved on the developer's side before a fast-forward push aligns the remote branch.
 
-1. **Simple Layout** - Grid-based standard layout.
-2. **Modern Office** - Two-column modern corporate aesthetic.
-3. **Professional Dark** - Heavy contrasted left sidebar for deep executive level aesthetic appeal.
-4. **Engineering Aesthetic** - Beige left-sidebar emphasizing hard technical skills and references alongside prominent photography.
-5. **Creative Format** - Playful typography and pink accents specifically tuned for graphic designers without headshots.
-6. **Medical Format** - Dense full-width header format designed for heavily credentialed paths like Nursing where licenses and rigid tabular work constraints are necessary. 
+## Tools Used
+- **Frontend**: Vanilla HTML5, CSS3, JavaScript.
+- **Backend Environment**: Node.js, Express.js.
+- **Authentication**: Passport.js with Google OAuth 2.0 (`passport-google-oauth20`). 
+- **Database**: MongoDB (Object modeling configured through `Mongoose`).
+- **DevOps & Version Control**: Git, GitHub, Render (Hosting platform).
 
-## Technology Stack
+## Screenshots
 
-- **Frontend**: Vanilla HTML5, CSS3, JavaScript
-- **Backend / API**: Node.js & Express.js
-- **Database**: Local JSON storage (`users.json`, `resumes.json`) routed via internal API routes.
+*Note: Please replace the placeholder image paths below with actual screenshots.*
 
-## Local Setup & Installation
+### Pipeline success
+![Pipeline Success Screenshot](./assets/pipeline-success.png)
 
-To run this tool locally on your machine, follow these steps:
+### Deployment output
+![Deployment Output Screenshot](./assets/deployment-output.png)
 
-1. **Ensure Node.js is Installed**
-   Make sure you have Node downloaded and installed on your system.
-   
-2. **Install Dependencies**
-   Navigate into the repository directory and run standard npm install to initialize packages.
-   ```bash
-   npm install
-   ```
-   *Note: If no package.json exists yet, run `npm init -y` and `npm install express cors`.*
-
-3. **Start the Application Server**
-   Start your backend by spinning up `server.js`.
-   ```bash
-   node server.js
-   ```
-   
-4. **Launch Application**
-   Open your preferred web browser and direct your navigation to **`http://localhost:3000`**!
-
-## Workflow & Usage
-
-1. Create a quick account via the landing page terminal. 
-2. Traverse to **Templates** to lock in an aesthetic.
-3. Provide targeted information inside the creatively constrained **Builder Form**.
-4. Save your resume, returning you to your main generic **Dashboard** where it will exist persistently.
-5. Click your rendered resume from the dashboard to invoke the Print dialog and generate your PDF.
+## Challenges Faced
+1. **Google OAuth Transitioning**: The application originally utilized client-side JavaScript popups for authentication. Converting this to a secure, server-side callback pipeline via Passport.js required completely rewriting the authentication logic and securely bridging frontend navigation states without causing CORS or verification payload errors.
+2. **Merge Conflicts**: Rebasing remote branches produced large monolithic merge conflicts in vital operational files (`server.js`). This necessitated careful manual line-by-line conflict resolution to ensure database references weren't overwritten.
+3. **Ghost Modules**: At one point, the local `node_modules` folder was accidentally committed to the remote repository which stalled the deployment. Resolving this required pruning the `.git` cache directly and setting up proper `.gitignore` protocols.
