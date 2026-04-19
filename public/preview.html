@@ -397,7 +397,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const mockTemplate = urlParams.get('mock');
 let data;
-
 if (mockTemplate) {
   // We are rendering a thumbnail! Hide controls and inject exact mock data.
   document.querySelector('.controls').style.display = 'none';
@@ -428,7 +427,7 @@ if (mockTemplate) {
       };
   } else {
       data = {
-          template: "template3",
+          template: mockTemplate,
           firstName: "Isabel", lastName: "Schumacher", profession: "Graphics Designer",
           phone: "+123-456-7890", email: "hello@reallygreatsite.com", address: "123 Anywhere St., Any City",
           profileSummary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -491,7 +490,7 @@ if (!data) {
       <div class="resume simple">
         <h1>${data.firstName || 'Full'} ${data.lastName || 'Name'}</h1>
         <div class="contact-info">
-          ${data.email || 'yourname@example.com'} • ${data.phone || '(123) 456-7890'} • www.example.com
+          ${data.email || 'yourname@example.com'} • ${data.phone || '(123) 456-7890'} • ${data.portfolio || 'www.reallygreatsite.com'}
         </div>
 
         <div class="section-title">Education</div>
@@ -512,14 +511,18 @@ if (!data) {
           ${data.jobDesc ? data.jobDesc.split('\\n').filter(s=>s.trim()).map(s => `<li>${s.trim()}</li>`).join('') : '<li>Describe what you did and what your impact was</li><li>Remember to be concise</li>'}
         </ul>
 
-        <div class="section-title" style="margin-top: 30px;">Projects & Extracurricular</div>
+        <div class="section-title" style="margin-top: 30px;">Certificates</div>
+        ${data.certName ? `
         <div class="item-header">
-          <div class="item-title">Project title</div>
-          <div class="item-date">Month Year</div>
+          <div class="item-title">${data.certName}</div>
+          <div class="item-date">${data.certYear || ''}</div>
         </div>
-        <ul class="item-desc">
-          <li>Describe what you did/built etc.</li>
-        </ul>
+        <div class="item-subtitle">${data.certIssuer || ''}</div>` : `
+        <div class="item-header">
+          <div class="item-title">Project Management</div>
+          <div class="item-date">2027</div>
+        </div>
+        <div class="item-subtitle">The Project Management Institute</div>`}
 
         <div class="section-title" style="margin-top: 30px;">Skills</div>
         <div class="skills-text">
@@ -549,7 +552,7 @@ if (!data) {
         <div class="contact-bar">
           <span>${data.email || 'chanchals@example.com'}</span>
           <span>${data.phone || '(718) 555-0100'}</span>
-          <span>LinkedIn profile</span>
+          <span>${data.address || '123 Anywhere Street, Any City'}</span>
         </div>
 
         <div class="section-heading">Experience</div>
@@ -602,7 +605,7 @@ if (!data) {
             <h3>Contact</h3>
             <div class="info-item">📞 ${data.phone || 'N/A'}</div>
             <div class="info-item">✉️ ${data.email || 'N/A'}</div>
-            <div class="info-item">📍 ${data.address || ''}, ${data.city || 'N/A'}</div>
+            <div class="info-item">📍 ${data.address || 'N/A'}</div>
           </div>
 
           <div class="section">

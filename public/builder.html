@@ -57,12 +57,13 @@
 <body>
 
 <div class="notice">
-  We suggest including an email and phone number.
+  Required fields include First Name, Last Name, Gender, Phone number, and Email. Please fill them out.
 </div>
 
 <form>
   <!-- CORE FIELDS (Always shown) -->
   <div class="row">
+<<<<<<< ours
     <div class="form-group" id="field-firstName">
       <label for="firstName">First Name</label>
       <input type="text" id="firstName" name="firstName" placeholder="First Name" />
@@ -93,11 +94,30 @@
     <div class="form-group" id="field-city" style="display:none;">
       <label for="city">City/Locality</label>
       <input type="text" id="city" name="city" placeholder="Denver, CO" />
+=======
+    <div class="form-group">
+      <label for="firstName">First Name *</label>
+      <input type="text" id="firstName" name="firstName" placeholder="First Name" required />
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name *</label>
+      <input type="text" id="lastName" name="lastName" placeholder="Last Name" required />
+    </div>
+    <div class="form-group">
+      <label for="gender">Gender *</label>
+      <select id="gender" name="gender" required>
+        <option value="">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+>>>>>>> theirs
     </div>
   </div>
 
   <!-- SOCIAL / LINKS -->
   <div class="row">
+<<<<<<< ours
     <div class="form-group" id="field-linkedin" style="display: none;">
       <label for="linkedin">LinkedIn</label>
       <input type="text" id="linkedin" name="linkedin" placeholder="linkedin.com/in/..." />
@@ -113,6 +133,19 @@
     <div class="form-group" id="field-twitter" style="display: none;">
       <label for="twitter">Twitter</label>
       <input type="text" id="twitter" name="twitter" placeholder="twitter.com/..." />
+=======
+    <div class="form-group">
+      <label for="phone">Phone *</label>
+      <input type="text" id="phone" name="phone" placeholder="Phone" required />
+    </div>
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input type="text" id="email" name="email" placeholder="Email" required />
+    </div>
+    <div class="form-group">
+      <label for="profession">Profession</label>
+      <input type="text" id="profession" name="profession" placeholder="e.g. Graphic Designer" />
+>>>>>>> theirs
     </div>
   </div>
 
@@ -157,15 +190,37 @@
     <div class="row">
       <div class="form-group" id="field-eduDegree">
         <label for="eduDegree">Degree</label>
-        <input type="text" id="eduDegree" placeholder="e.g. B.S. Computer Science" />
+        <input type="text" id="eduDegree" placeholder="e.g. Bachelor of Design" />
       </div>
       <div class="form-group" id="field-eduSchool">
         <label for="eduSchool">School / University</label>
-        <input type="text" id="eduSchool" placeholder="e.g. XYZ University" />
+        <input type="text" id="eduSchool" placeholder="e.g. Wardiere University" />
       </div>
+<<<<<<< ours
       <div class="form-group" id="field-eduDates">
         <label for="eduDates">Dates / Year</label>
         <input type="text" id="eduDates" placeholder="e.g. Sep 2015 - May 2019" />
+=======
+      <div class="form-group">
+        <label for="eduDates">Dates</label>
+        <input type="text" id="eduDates" placeholder="e.g. 2011 - 2015" />
+      </div>
+    </div>
+    
+    <h4 style="margin-bottom:10px;">Certificates (Template 1 Only)</h4>
+    <div class="row">
+      <div class="form-group">
+        <label for="certName">Certificate Name</label>
+        <input type="text" id="certName" placeholder="e.g. Project Management" />
+      </div>
+      <div class="form-group">
+        <label for="certIssuer">Issuing Organization</label>
+        <input type="text" id="certIssuer" placeholder="e.g. Project Management Institute" />
+      </div>
+      <div class="form-group">
+        <label for="certYear">Year</label>
+        <input type="text" id="certYear" placeholder="e.g. 2027" />
+>>>>>>> theirs
       </div>
     </div>
 
@@ -238,6 +293,7 @@ function saveResume() {
     // ✅ Get selected template
     let template = localStorage.getItem("selectedTemplate");
 
+<<<<<<< ours
     // ✅ Create resume object
     let resumeData = {
         template: template,
@@ -280,6 +336,41 @@ function saveResume() {
         eduSchool: document.getElementById("eduSchool") ? document.getElementById("eduSchool").value : "",
         eduDates: document.getElementById("eduDates") ? document.getElementById("eduDates").value : ""
     };
+=======
+        // Form validation
+        if (!document.getElementById("firstName").value || !document.getElementById("lastName").value || !document.getElementById("gender").value || !document.getElementById("phone").value || !document.getElementById("email").value) {
+            alert("Please fill out all the required fields (First Name, Last Name, Gender, Phone, Email).");
+            return;
+        }
+
+        // ✅ Create resume object
+        let resumeData = {
+            template: template,
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            gender: document.getElementById("gender").value,
+            profession: document.getElementById("profession").value,
+            address: document.getElementById("address").value,
+            portfolio: document.getElementById("portfolio").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            
+            // Professional optional fields properly extracted
+            profileSummary: document.getElementById("profileSummary") ? document.getElementById("profileSummary").value : "",
+            skills: document.getElementById("profSkills") ? document.getElementById("profSkills").value : "",
+            languages: document.getElementById("profLanguages") ? document.getElementById("profLanguages").value : "",
+            jobTitle: document.getElementById("jobTitle") ? document.getElementById("jobTitle").value : "",
+            jobCompany: document.getElementById("jobCompany") ? document.getElementById("jobCompany").value : "",
+            jobDates: document.getElementById("jobDates") ? document.getElementById("jobDates").value : "",
+            jobDesc: document.getElementById("jobDesc") ? document.getElementById("jobDesc").value : "",
+            eduDegree: document.getElementById("eduDegree") ? document.getElementById("eduDegree").value : "",
+            eduSchool: document.getElementById("eduSchool") ? document.getElementById("eduSchool").value : "",
+            eduDates: document.getElementById("eduDates") ? document.getElementById("eduDates").value : "",
+            certName: document.getElementById("certName") ? document.getElementById("certName").value : "",
+            certIssuer: document.getElementById("certIssuer") ? document.getElementById("certIssuer").value : "",
+            certYear: document.getElementById("certYear") ? document.getElementById("certYear").value : ""
+        };
+>>>>>>> theirs
 
     let photoElem = document.getElementById("photo");
     let file = photoElem ? photoElem.files[0] : null;
@@ -306,7 +397,8 @@ function saveResume() {
 
         // Save to Database via API
         try {
-            await fetch('/api/resumes', {
+            const apiBaseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+            await fetch(apiBaseUrl + '/api/resumes', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ username: user, resumeData: data })
