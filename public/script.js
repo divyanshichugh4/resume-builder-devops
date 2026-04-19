@@ -41,6 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "resume_result.html";
     }
     window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        const usernameParam = params.get('username');
+        if (usernameParam) {
+            localStorage.setItem("loggedInUser", usernameParam);
+            // Clean the URL so the parameter goes away from the address bar
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
         if (window.location.pathname.includes("dashboard.html")) {
             let user = localStorage.getItem("loggedInUser");
 

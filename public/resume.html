@@ -6,8 +6,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Resume Builder</title>
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Server-side passport auth being used -->
   <style>
     body {
       margin: 0;
@@ -96,16 +95,8 @@
 
       <div style="margin: 15px 0; color: #666;">or</div>
 
-      <!-- Google Sign-In config and button -->
-      <!-- YOU MUST REPLACE data-client_id WITH YOUR ACTUAL GOOGLE CLIENT ID -->
-      <div id="g_id_onload" data-client_id="1016595135927-hhrisfu8j05llfvsl0n2cjbr8b7cqp43.apps.googleusercontent.com"
-        data-context="signin" data-ux_mode="popup" data-callback="handleCredentialResponse" data-auto_prompt="false">
-      </div>
-
-      <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
-        data-text="signin_with" data-size="large" data-logo_alignment="left"
-        style="display: flex; justify-content: center;">
-      </div>
+      <!-- Google Sign-In button -->
+      <a href="/auth/google" class="btn-red link-button" style="display: block; width: 100%; box-sizing: border-box; background-color: #4285F4; margin-top: 10px;">Sign in with Google</a>
     </div>
 
     <div id="signup-form" style="display:none; margin-top:20px;">
@@ -123,28 +114,6 @@
   </div>
 
   <script>
-    async function handleCredentialResponse(response) {
-      try {
-        const apiBaseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-        const res = await fetch(apiBaseUrl + '/api/google-login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ credential: response.credential })
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          alert("Google Login successful!");
-          localStorage.setItem("loggedInUser", data.username);
-          window.location.href = "dashboard.html";
-        } else {
-          alert("Google Login failed: " + (data.error || 'Unknown error'));
-        }
-      } catch (err) {
-        alert("Server error! Details: " + err.message);
-      }
-    }
 
     function showLogin() {
       document.getElementById('login-form').style.display = 'block';

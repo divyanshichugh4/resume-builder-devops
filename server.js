@@ -6,12 +6,12 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose'); // ✅ added
-const { OAuth2Client } = require('google-auth-library');
+const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-// We use the environment variable if available, otherwise a placeholder.
-// The user MUST provide a valid client ID for the Google Sign-In to fully work and be verified securely.
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '1016595135927-hhrisfu8j05llfvsl0n2cjbr8b7cqp43.apps.googleusercontent.com';
-const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'fallback-secret-for-local-testing';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,6 +26,51 @@ app.use(cors());
 // Set a larger body limit because resumes can contain 2MB+ base64 encoded profile photos
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(express.static('public'));
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'resume-builder-secret',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+    done(null, user.username);
+});
+
+passport.deserializeUser(async (username, done) => {
+    try {
+        const User = mongoose.model('User');
+        const user = await User.findOne({ username });
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
+});
+
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "https://resume-builder-g7k8.onrender.com/auth/google/callback",
+    proxy: true
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+        const email = profile.emails[0].value;
+        const User = mongoose.model('User');
+        let user = await User.findOne({ username: email });
+        if (!user) {
+            user = new User({ username: email, password: 'google-oauth-placeholder-password' });
+            await user.save();
+        }
+        return done(null, user);
+    } catch (err) {
+        return done(err, null);
+    }
+  }
+));
 
 // ---------------- DATABASE SCHEMAS ----------------
 
@@ -140,42 +185,17 @@ app.get('/api/resumes/:username', async (req, res) => {
     }
 });
 
-// API: Google Login
-app.post('/api/google-login', async (req, res) => {
-    const { credential } = req.body;
-    if (!credential) return res.status(400).json({ error: 'Missing credential' });
+// API: Google Login with Passport
+app.get("/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
-    try {
-        let payload;
-        try {
-             const ticket = await client.verifyIdToken({
-                 idToken: credential,
-                 audience: GOOGLE_CLIENT_ID,
-             });
-             payload = ticket.getPayload();
-        } catch (verifyError) {
-             console.warn("Token verification skipped or failed. This might be because you are using a placeholder Client ID.");
-             return res.status(401).json({ error: 'Token verification failed. Do you have a valid GOOGLE_CLIENT_ID configured?' });
-        }
-        
-        const email = payload.email;
-        if (!email) {
-            return res.status(400).json({ error: 'No email found in Google token' });
-        }
-
-        let user = await User.findOne({ username: email });
-        if (!user) {
-            const newUser = new User({ username: email, password: 'google-oauth-placeholder-password' });
-            await newUser.save();
-        }
-        
-        res.json({ success: true, username: email });
-
-    } catch (err) {
-        console.error("Google login error:", err);
-        res.status(500).json({ error: 'Internal server error during Google login' });
-    }
-});
+app.get("/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/resume.html" }),
+  (req, res) => {
+    res.redirect("/dashboard.html?username=" + encodeURIComponent(req.user.username));
+  }
+);
 
 // API: Get All Data (For Admin)
 app.get('/api/admin/data', async (req, res) => {
