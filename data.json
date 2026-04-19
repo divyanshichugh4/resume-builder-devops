@@ -12,6 +12,10 @@
       "username": "divyanshi4456@gmail.com",
       "password": "",
       "isGoogleAuth": true
+    },
+    {
+      "username": "Mithichugh",
+      "password": "1234"
     }
   ],
   "resumes": {
@@ -170,6 +174,37 @@
       {
         "template": "template3",
 
+        "firstName": "",
+        "middleName": "",
+        "lastName": "",
+        "gender": "",
+        "dob": "",
+        "maritalStatus": "",
+        "profession": "",
+        "address": "",
+        "city": "",
+        "state": "",
+        "nationality": "",
+        "passport": "",
+        "phone": "",
+        "email": "",
+        "profileSummary": "",
+        "skills": "",
+        "languages": "",
+        "hobbies": "",
+        "jobTitle": "",
+        "jobCompany": "",
+        "jobDates": "",
+        "jobDesc": "",
+        "eduDegree": "",
+        "eduSchool": "",
+        "eduDates": "",
+        "photo": null
+      }
+    ],
+    "Mithichugh": [
+      {
+        "template": "template1",
         "firstName": "",
         "middleName": "",
         "lastName": "",

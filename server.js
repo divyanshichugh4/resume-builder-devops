@@ -177,6 +177,18 @@ app.post('/api/google-login', async (req, res) => {
     }
 });
 
+// API: Get All Data (For Admin)
+app.get('/api/admin/data', async (req, res) => {
+    try {
+        const users = await User.find({});
+        const resumes = await Resume.find({});
+        res.json({ success: true, data: { users, resumes } });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Database error' });
+    }
+});
+
 // ---------------- START SERVER ----------------
 
 app.listen(PORT, () => {
