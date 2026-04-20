@@ -28,15 +28,15 @@ The project utilizes a structured **Feature Branching and Rebasing** workflow:
 - **Database**: MongoDB (Object modeling configured through `Mongoose`).
 - **DevOps & Version Control**: Git, GitHub, Render (Hosting platform).
 
-## Screenshots
 
-*Note: Please replace the placeholder image paths below with actual screenshots.*
 
 ### Pipeline success
-![Pipeline Success Screenshot](./assets/pipeline-success.png)
+<img width="1366" height="615" alt="image" src="https://github.com/user-attachments/assets/2701dca5-fbf4-436f-9375-e156209aee4f" />
+
 
 ### Deployment output
-![Deployment Output Screenshot](./assets/deployment-output.png)
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/1cfbd634-7bef-4cf8-bb92-77fb4d494a8c" />
+
 
 ## Challenges Faced
 1. **Google OAuth Transitioning**: The application originally utilized client-side JavaScript popups for authentication. Converting this to a secure, server-side callback pipeline via Passport.js required completely rewriting the authentication logic and securely bridging frontend navigation states without causing CORS or verification payload errors.
