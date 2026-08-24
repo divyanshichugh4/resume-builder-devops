@@ -10,9 +10,9 @@ on:
 
 jobs:
 
-  # --------------------------------------------------
+  # -----------------------------------------
   # 1. BUILD AND TEST
-  # --------------------------------------------------
+  # -----------------------------------------
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
@@ -21,20 +21,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Build and test with Maven
-        run: mvn -B clean verify
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build --if-present
+
+      - name: Run tests
+        run: npm test --if-present
 
 
-  # --------------------------------------------------
+  # -----------------------------------------
   # 2. SONARQUBE SECURITY ANALYSIS
-  # --------------------------------------------------
+  # -----------------------------------------
   security:
     name: SonarQube Security Analysis
     runs-on: ubuntu-latest
@@ -46,15 +51,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Build with Maven
-        run: mvn -B clean verify
+      - name: Install dependencies
+        run: npm ci
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7
@@ -70,9 +74,9 @@ jobs:
           SONAR_HOST_URL: https://sonarcloud.io
 
 
-  # --------------------------------------------------
-  # 3. PACKAGE AND DEPLOY
-  # --------------------------------------------------
+  # -----------------------------------------
+  # 3. PACKAGE / DEPLOY
+  # -----------------------------------------
   deploy:
     name: Package and Deploy
     runs-on: ubuntu-latest
@@ -82,18 +86,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Package application
-        run: mvn -B clean package -DskipTests
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Upload JAR artifact
+      - name: Create deployment artifact
+        run: |
+          zip -r resume-builder.zip . \
+            -x "node_modules/*" \
+            -x ".git/*"
+
+      - name: Upload deployment artifact
         uses: actions/upload-artifact@v4
         with:
-          name: LifeSync-jar
-          path: target/*.jar
+          name: resume-builder
+          path: resume-builder.zip
